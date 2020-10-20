@@ -94,7 +94,7 @@ The following models were tested which included logistic regression, k-nearest n
 
 Bagging - random forest returned a 89% accuracy rate. As we observe the confusion matrix, when the model predicted 0 (not injured) and the result was not injured, the model was correct 99% of the time. When the model predicted 1 (injured) and the result was injured, it was correct 73% of the time. 
 
-<img src ="">
+<img src ="Screen Shot 2020-10-19 at 7.27.53 PM.png">
 
 ## iNtrepretation 
 
