@@ -1,190 +1,139 @@
 
-# Module 3 Final Project
+# Chicago Car Crash Data
 
+## Predicting Chicago Car Accidents & Injuries 
 
-## Introduction
+## By: Hiten Patel 
 
-In this lesson, we'll review all the guidelines and specifications for the final project for Module 3.
+In an average span of four days, the city of Chicago will record over one thousand traffic accidents. When you include the drivers, passengers, pedestrians and cyclists, potentially over two thousand people will be involved and 45% of them will experience a minor to fatal injury. 
 
+The goal is to create a classification model to predict what are the leading indicators to what causes an accident that can result in an injury. 
 
-## Objectives
+If successful and the City of Chicago implements our recommendations, Chicago will see a decrease in injuries and fatalities, decrease in traffic and an overall increase in safety for all citizens.  
 
-- Understand all required aspects of the Final Project for Module 3
-- Understand all required deliverables
-- Understand what constitutes a successful project
+## Dataset
 
-## Final Project Summary
+The source for the datasets came from the City of Chicago Website. There were three datasets that we observed, "Traffic Crashes - Crashes", "Traffic Crashes - Vehicle", and "Traffic Crashes - People". Then we merged them into one database. 
 
-Congratulations! You've made it through another _intense_ module, and now you're ready to show off your newfound Machine Learning skills!
+Column names and descriptions can be found here; 
 
-![awesome](https://raw.githubusercontent.com/learn-co-curriculum/dsc-mod-3-project-v2-1/master/smart.gif)
+Traffic Crashes - Crashes: https://data.cityofchicago.org/Transportation/Traffic-Crashes-Crashes/85ca-t3if
 
-All that remains for Module 3 is to complete the final project!
+Traffic Crashes - Vehicle: https://data.cityofchicago.org/Transportation/Traffic-Crashes-Vehicles/68nd-jvt3
 
-## The Project
+Traffic Crashes - People:
+https://data.cityofchicago.org/Transportation/Traffic-Crashes-People/u6pd-qa9d
 
-The main goal of this project is to create a classification model. For this project you have the choice to either:
+## Methodology: O.S.E.M.N Framework
 
-- choose a data set from a curated list
-- choose your own data set _outside_ of the curated list. 
+>Obtain:
+* Extracting the data from the following files;
+    * Crash = https://data.cityofchicago.org/resource/85ca-t3if.csv
+    * Vehicle = https://data.cityofchicago.org/resource/68nd-jvt3.csv
+    * Person = https://data.cityofchicago.org/resource/u6pd-qa9d.csv
 
-The data guidelines for either option are shown below
+>Scrub:
+* Explore the raw data set and understand the values
+* Understanding the null values and evaluating the best steps to take to eliminate them
+* Replacing values with meaningful data and converting data types
+* Deleting irrelevant and redundant columns 
 
-For this project, you're going to select a dataset of your choosing and create a classification model. You'll start by identifying a problem you can solve with classification, and then identify a dataset. You'll then use everything you've learned about Data Science and Machine Learning thus far to source a dataset, preprocess and explore it, and then build and interpret a classification model that answers your chosen question.
+>Explore:
+* Creating visualizations to better understand the data
+* Engineering New Columns 
+* Deriving statistics from the data
 
-### a. Choosing the data from a curated list
+>Model:
+ * Created multiple models including logistic regression, KNN, decision trees, bagging and random forest
+ * Performed a gridsearch to each model to extract the best parameters 
 
-You are allowed to select one of the four data sets described below. Each comes with its own advantages and disadvantages, and, of course, its own associated business problem and stakeholders. It may be desirable to flesh out your understanding of the audience or the business proposition a little more than sketched out here. If you select one of these four data sets, you **need no further approval from your instructor**.
+>iNtrepret:
+* Evaluating the accuracy score which led to the Bagging(Random Forest) classifier as the best model
 
+## Results
 
-1) [Chicago Car Crash Data](https://data.cityofchicago.org/Transportation/Traffic-Crashes-Crashes/85ca-t3if). Note this links also to [Vehicle Data](https://data.cityofchicago.org/Transportation/Traffic-Crashes-Vehicles/68nd-jvt3) and to [Driver/Passenger Data](https://data.cityofchicago.org/Transportation/Traffic-Crashes-People/u6pd-qa9d).
+### Original Data
 
-Build a classifier to predict the primary contributory cause of a car accident, given information about the car, the people in the car, the road conditions etc. You might imagine your audience as a Vehicle Safety Board who's interested in reducing traffic accidents, or as the City of Chicago who's interested in becoming aware of any interesting patterns. Note that there is a **multi-class** classification problem. You will almost certainly want to bin or trim or otherwise limit the number of target categories on which you ultimately predict. Note e.g. that some primary contributory causes have very few samples.
+The first steps to creating our model were to obtain and merge all three of the data sets into one. This created a table with 1289 entries and 149 columns. 
 
-2) [Terry Stops Data](https://catalog.data.gov/dataset/terry-stops).
-In [*Terry v. Ohio*](https://www.oyez.org/cases/1967/67), a landmark Supreme Court case in 1967-8, the court found that a police officer was not in violation of the "unreasonable search and seizure" clause of the Fourth Amendment, even though he stopped and frisked a couple of suspects only because their behavior was suspicious. Thus was born the notion of "reasonable suspicion", according to which an agent of the police may e.g. temporarily detain a person, even in the absence of clearer evidence that would be required for full-blown arrests etc. Terry Stops are stops made of suspicious drivers.
+To trim the number of columns, we first calculated how many null values there were per column. Columns that had over 70% null values were removed and that calculation alone brought our column total to 74. 
 
-Build a classifier to predict whether an arrest was made after a Terry Stop, given information about the presence of weapons, the time of day of the call, etc. Note that this is a **binary** classification problem.
+Next, we removed redundant and irrelevant columns and this was decided by reviewing the "column descriptions" provided by the city of Chicago website. 
 
-Note that this dataset also includes information about gender and race. You **may** use this data as well. You may, e.g. pitch your project as an inquiry into whether race (of officer or of subject) plays a role in whether or not an arrest is made.
+Furthermore, we either created bins or remapped the values to a more simple form to the following columns; 
+   * crash_hour
+   * age
+   * posted_speed_limit
+   * traffic_control_device
+   * device_condition
+   * weather_condition
+   * first_crash_type
+   * road_defect
+   * vehicle_type
+   * safety equipment
+   * airbag_deployed
+   * driver_vision
 
-If you **do** elect to make use of race or gender data, be aware that this can make your project a highly sensitive one; your discretion will be important, as well as your transparency about how you use the data and the ethical issues surrounding it.
+### Identifying Target
 
-3) [Customer Churn Data](https://www.kaggle.com/becksddf/churn-in-telecoms-dataset)
+The target column will be 'injuries_total'. The data will be converted to '1' if you had one or more injuries and '0' if you had none. The column has been renamed to 'Injured'. 
 
-Build a classifier to predict whether a customer will ("soon") stop doing business with SyriaTel, a telecommunications company. Note that this is a **binary** classification problem.
+### Preprocessing
 
-Most naturally, your audience here would be the telecom business itself, interested in losing money on customers who don't stick around very long. Are there any predictable patterns here?
+Prior to preprocessing, we ran a train-test-split to ensure there will be no data leakage. 
 
-4) [Tanzanian Water Well Data](https://www.drivendata.org/competitions/7/pump-it-up-data-mining-the-water-table/page/23/) (*active competition*!)
-Tanzania, as a developing country, struggles with providing clean water to its population of over 57,000,000. There are many waterpoints already established in the country, but some are in need of repair while others have failed altogether.
+At this point, the data had no numerical columns after the scrubbing and explore phase. For the categorical columns, we created a pipeline where the columns would go through a "simpleimputer" where missing values were filled with 'MISSING' and then push through a "oneHotEncoder" to create binary variables.
 
-Build a classifier to predict the condition of a water well, using information about the sort of pump, when it was installed, etc. Note that this is a **ternary** classification problem.
+The last step was to check if there was a class imbalance and there was not. The data was ready to proceed into the modeling stage. 
 
 
-### b. Selecting a Data Set _Outside_ of the Curated List
 
-We encourage you to be very thoughtful when identifying your problem and selecting your data set--an overscoped project goal or a poor data set can quickly bring an otherwise promising project to a grinding halt. **If you are going to choose your own data set, you'll need to run it by your instructor for approval**.
+### Model
 
-To help you select an appropriate data set for this project, we've set some guidelines:
+The following models were tested which included logistic regression, k-nearest neighbors, decision trees, bagging-random forest and random forest.
 
-1. Your dataset should work for classification. The classification task can be either binary or multiclass, as long as it's a classification model.   
+Bagging - random forest returned a 89% accuracy rate. As we observe the confusion matrix, when the model predicted 0 (not injured) and the result was not injured, the model was correct 99% of the time. When the model predicted 1 (injured) and the result was injured, it was correct 73% of the time. 
 
-2. Your dataset needs to be of sufficient complexity. Try to avoid picking an overly simple dataset. Try to avoid extremely small datasets, as well as the most common datasets like titanic, iris, MNIST, etc. We want to see all the steps of the Data Science Process in this project--it's okay if the dataset is mostly clean, but we expect to see some preprocessing and exploration. See the following section, **_Data Set Constraints_**, for more information on this.   
+<img src ="">
 
-3. On the other end of the spectrum, don't pick a problem that's too complex, either. Stick to problems that you have a clear idea of how you can use machine learning to solve it. For now, we recommend you stay away from overly complex problems in the domains of Natural Language Processing or Computer Vision--although those domains make use of Supervised Learning, they come with a lot of other special requirements and techniques that you don't know yet (but you'll learn soon!). If you're chosen problem feels like you've overscoped, then it probably is. If you aren't sure if your problem scope is appropriate, double check with your instructor!  
+## iNtrepretation 
 
-#### Data Set Constraints
+We extracted the 'feature_importance' from the bagging classifier and created the chart below.
 
-When selecting a data set, be sure to take into consideration the following constraints:
+Crucial information is missing from two columns. First, airbag_deployed, this column could help tell us if an injury occurred or not occurred to a driver and second, vehicle_type, this column could help tell us which type of vehicles are most likely to get into a traffic accident.
 
-1. Your data set can't be one we've already worked with in any labs.
-2. Your data set should contain a minimum of 1000 rows.    
-3. Your data set should contain a minimum of 10 predictor columns, before any one-hot encoding is performed.   
-4. Your instructor must provide final approval on your data set.
+The next observation we can make is that the most type of traffic accidents are drivers colliding with pedestrians and cyclist. 
 
-#### Problem First, or Data First?
+<img src = "feature_importance.png">
 
-There are two ways that you can about getting started: **_Problem-First_** or **_Data-First_**.
+The following graph shows the most involved types of units, meaning who is most likely involved within a traffic accident. We can also see the comparison who is injured and not injured. 
 
-**_Problem-First_**: Start with a problem that you want to solve with classification, and then try to find the data you need to solve it.  If you can't find any data to solve your problem, then you should pick another problem.
+<img src ="Screen Shot 2020-10-19 at 7.46.34 PM.png">
 
-**_Data-First_**: Take a look at some of the most popular internet repositories of cool data sets we've listed below. If you find a data set that's particularly interesting for you, then it's totally okay to build your problem around that data set.
+Furthermore, here is a graph to show the types of accidents that occur in Chicago and compares the not-injured/injured within each subset.
 
-There are plenty of amazing places that you can get your data from. We recommend you start looking at data sets in some of these resources first:
+<img src ="Screen Shot 2020-10-19 at 7.47.33 PM.png">
 
-* [UCI Machine Learning Datasets Repository](https://archive.ics.uci.edu/ml/datasets.html)
-* [Kaggle Datasets](https://www.kaggle.com/datasets)
-* [Awesome Datasets Repo on Github](https://github.com/awesomedata/awesome-public-datasets)
-* [New York City Open Data Portal](https://opendata.cityofnewyork.us/)
-* [Inside AirBNB ](http://insideairbnb.com/)
+In addition to, after reviewing the data, we saw another interesting pattern. The majority of traffic accidents occur where there are 30mph, 35mph or 40mph posted speed limit signs. 
 
+<img src ="time of day.png" >
 
-## The Deliverables
+## Conclusion
 
-For online students, your completed project should contain the following four deliverables:
+Because the bagging classifier returned a 89% accuracy rate, we are confident in the following recommendations; 
+* Ped/Cyclist should wear contrasting colors and should be more aware during afternoon/rush hour traffic
+* The city can increase traffic signs and lanes that are more ped/cyclist friendly 
+* The city lowers the speed limit during afternoon/rush hour (specifically in 30-40 mph zones) 
 
-1. A **_Jupyter Notebook_** containing any code you've written for this project. This work will need to be pushed to a public GitHub repository dedicated for this project.
+## Future Work 
 
-2. An organized **README.md** file in the GitHub repository that describes the contents of the repository. This file should be the source of information for navigating through the repository. 
+The next steps to improve our model would be;
+* retrieving driving records
+* merging weather data 
+* investigate why traffic control devices are not present or not working
+* investigate why there is missing data
 
-3. A **_[Blog Post](https://github.com/learn-co-curriculum/dsc-welcome-blogging-v2-1)_**.
 
-4. An **_"Executive Summary" PowerPoint Presentation_** that gives a brief overview of your problem/dataset, and each step of the OSEMN process.
+```python
 
-Note: On-campus students may have different deliverables, please speak with your instructor.
-
-### Jupyter Notebook Must-Haves
-
-For this project, your Jupyter Notebook should meet the following specifications:
-
-**_Organization/Code Cleanliness_**
-
-* The notebook should be well organized, easy to follow, and code is commented where appropriate.  
-    * Level Up: The notebook contains well-formatted, professional looking markdown cells explaining any substantial code. All functions have docstrings that act as professional-quality documentation.  
-* The notebook is written to technical audiences with a way to both understand your approach and reproduce your results. The target audience for this deliverable is other data scientists looking to validate your findings.  
-
-**_Process, Methodology, and Findings_**
-
-* Your notebook should contain a clear record of your process and methodology for exploring and preprocessing your data, building and tuning a model, and interpreting your results.
-* We recommend you use the OSEMN process to help organize your thoughts and stay on track.
-
-### Blog Post Must-Haves
-
-Refer back to the [Blogging Guidelines](https://github.com/learn-co-curriculum/dsc-welcome-blogging-v2-1) for the technical requirements and blog ideas.
-
-## The Process
-
-These steps are informed by Smart Vision's<sup>1</sup> description of the CRISP-DM process.
-
-### 1. Business Understanding
-
-Start by reading this document, and making sure that you understand the kinds of questions being asked.  In order to narrow your focus, you will likely want to make some design choices about your specific audience, rather than addressing all of the "many people" mentioned in the background section.  Do you want to emphasize affordability, investment, or something else?  This framing will help you choose which stakeholder claims to address.
-
-Three things to be sure you establish during this phase are:
-
-1. **Objectives:** what questions are you trying to answer, and for whom?
-2. **Project plan:** you may want to establish more formal project management practices, such as daily stand-ups or using a Trello board, to plan the time you have remaining.  Regardless you should determine the division of labor, communication expectations, and timeline.
-3. **Success criteria:** what does a successful project look like?  How will you know when you have achieved it?
-
-### 2. Data Understanding
-
-Write a script to download the data (or instructions for future users on how to manually download it), and explore it.  Do you understand what the columns mean?  How do the three data tables relate to each other?  How will you select the subset of relevant data?  What kind of data cleaning is required?
-
-It may be useful to generate visualizations of the data during this phase.
-
-### 3. Data Preparation
-
-Through SQL and Pandas, perform any necessary data cleaning and develop a query that pulls in all relevant data for analysis in a linear regression model, including any merging of tables.  Be sure to document any data that you choose to drop or otherwise exclude.  This is also the phase to consider any feature scaling or one-hot encoding required to feed the data into a classification model.
-
-### 4. Modeling
-
-The focus this time is on prediction. Good prediction is a matter of the model generalizing well. Steps we can take to assure good generalization include: testing the model on unseen data, cross-validation, and regularization. What sort of model should you build? A diverse portfolio is probably best. Classification models we've looked at so far include logistic regression, decision trees, bagging, and boosting, each of these with different flavors. You are encouraged to try any or all of these.
-
-### 5. Evaluation
-
-Recall that there are many different metrics we might use for evaluating a classification model. Accuracy is intuitive, but can be misleading, especially if you have class imbalances in your target. Perhaps, depending on you're defining things, it is more important to minimize false positives, or false negatives. It might therefore be more appropriate to focus on precision or recall. You might also calculate the AUC-ROC to measure your model's *discrimination*.
-
-### 6. Deployment
-
-In this case, your "deployment" comes in the form of the deliverables listed above. Make sure you can answer the following questions about your process:
-
- - "How did you pick the question(s) that you did?"
- - "Why are these questions important from a business perspective?"
- - "How did you decide on the data cleaning options you performed?"
- - "Why did you choose a given method or library?"
- - "Why did you select those visualizations and what did you learn from each of them?"
- - "Why did you pick those features as predictors?"
- - "How would you interpret the results?"
- - "How confident are you in the predictive quality of the results?"
- - "What are some of the things that could cause the results to be wrong?"
-
-
-## Grading Rubric 
-
-Online students can find a PDF of the grading rubric for the project [here](https://github.com/learn-co-curriculum/dsc-mod-3-project-v2-1/blob/master/module_3_project_rubric.pdf). _Note: On-campus students may have different requirements, please speak with your instructor._ 
-
-
-## Citation
-
-1. "What is the CRISP-DM Methodology?" Smart Vision Europe. Available at: https://www.sv-europe.com/crisp-dm-methodology/
+```
