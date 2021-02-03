@@ -94,7 +94,7 @@ The following models were tested which included logistic regression, k-nearest n
 
 Bagging - random forest returned a 89% accuracy rate. As we observe the confusion matrix, when the model predicted 0 (not injured) and the result was not injured, the model was correct 99% of the time. When the model predicted 1 (injured) and the result was injured, it was correct 73% of the time. 
 
-<img src ="Screen Shot 2020-10-19 at 7.27.53 PM.png">
+<img src ="images/Screen Shot 2020-10-19 at 7.27.53 PM.png">
 
 ## iNtrepretation 
 
@@ -104,19 +104,19 @@ Crucial information is missing from two columns. First, airbag_deployed, this co
 
 The next observation we can make is that the most type of traffic accidents are drivers colliding with pedestrians and cyclist. 
 
-<img src = "feature_importance.png">
+<img src = "images/feature_importance.png">
 
 The following graph shows the most involved types of units, meaning who is most likely involved within a traffic accident. We can also see the comparison who is injured and not injured. 
 
-<img src ="Screen Shot 2020-10-19 at 7.46.34 PM.png">
+<img src ="images/Screen Shot 2020-10-19 at 7.46.34 PM.png">
 
 Furthermore, here is a graph to show the types of accidents that occur in Chicago and compares the not-injured/injured within each subset.
 
-<img src ="Screen Shot 2020-10-19 at 7.47.33 PM.png">
+<img src ="images/Screen Shot 2020-10-19 at 7.47.33 PM.png">
 
 In addition to, after reviewing the data, we saw another interesting pattern. The majority of traffic accidents occur where there are 30mph, 35mph or 40mph posted speed limit signs. 
 
-<img src ="time of day.png" >
+<img src ="images/time of day.png" >
 
 ## Conclusion
 
